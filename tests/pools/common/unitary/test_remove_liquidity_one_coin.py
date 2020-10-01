@@ -25,10 +25,12 @@ def test_amount_received(chain, alice, swap, wrapped_coins, wrapped_decimals, id
 
     swap.remove_liquidity_one_coin(10**18, idx, 0, {'from': alice})
 
+    balance = wrapped.balanceOf(alice) if wrapped != ETH_ADDRESS else alice.balance()
+
     if rate_mod < 1:
-        assert 10**decimals <= wrapped.balanceOf(alice) < 10**decimals / rate_mod
+        assert 10**decimals <= balance < 10**decimals / rate_mod
     else:
-        assert 10**decimals // rate_mod <= wrapped.balanceOf(alice) <= 10**decimals
+        assert 10**decimals // rate_mod < balance <= 10**decimals
 
 
 @pytest.mark.itercoins("idx")
